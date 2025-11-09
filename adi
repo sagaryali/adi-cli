@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# adi - A personal CLI command
+# Version: 1.0.0
+
+cat << "EOF"
+    ___    ____  ____
+   /   |  / __ \/  _/
+  / /| | / / / // /  
+ / ___ |/ /_/ // /   
+/_/  |_/_____/___/   
+                     
+Hello! This is the adi command.
+More information coming soon...
+
+EOF
