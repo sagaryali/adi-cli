@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # adi - Interactive CLI Portfolio
-# Version: 2.2.0
+# Version: 2.1.0
+
+# If stdin isn't a TTY (e.g., running via `curl ... | bash`), rebind to the terminal
+if [ ! -t 0 ] && [ -e /dev/tty ]; then
+  exec </dev/tty
+fi
 
 # Colors
 CYAN='\033[0;36m'
@@ -43,7 +48,7 @@ show_welcome() {
 EOF
     echo -e "${RESET}"
     echo -e "${BOLD}Hello, I'm Aditya Garyali.${RESET}"
-    echo "Welcome to my CLI portfolio."
+    echo -e "Welcome to my CLI portfolio."
     echo ""
     echo -e "${GREEN}Type 'start' to explore.${RESET}"
     echo ""
@@ -82,7 +87,7 @@ show_about() {
     press_enter
 }
 
-# Work section
+# Work section - Project list
 show_work() {
     clear
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -103,7 +108,7 @@ show_work() {
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
     echo ""
     echo -ne "${BOLD}→${RESET} "
-
+    
     read -r choice
     case $choice in
         1) show_project_databass ;;
@@ -118,7 +123,7 @@ show_work() {
     esac
 }
 
-# Databass AI
+# Project detail pages
 show_project_databass() {
     clear
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -127,19 +132,21 @@ show_project_databass() {
     echo ""
     echo -e "${DIM}Helping AI understand human nuance${RESET}"
     echo ""
-
+    
     echo -e "${BOLD}Goal${RESET}"
-    echo "AI models struggled to capture nuanced user taste,"
-    echo "leading to bland or off-target music outputs."
+    echo "AI models couldn't capture each user's individual music taste,"
+    echo "leading to bland or off-target outputs."
     echo ""
     echo -e "${BOLD}Solution${RESET}"
-    echo "A two-step intent-capture flow for mood, genre,"
-    echo "and stylistic cues."
+    echo "Designed a context-aware, two-step intent-capture flow that"
+    echo "learns mood, genre, and stylistic cues through lightweight"
+    echo "iteration."
     echo ""
     echo -e "${BOLD}Outcome${RESET}"
-    echo "Higher first-output success rate and fewer re-rolls."
+    echo "Higher first-output success rate, fewer re-rolls, and users"
+    echo "progressing faster from 'blank canvas' to usable track."
     echo ""
-
+    
     eq_patterns=(
         "    ▁ ▃ ▅ █ ▇ ▅ ▃ ▁     ▃ ▅ ▇ █ ▇ ▅ ▃     ▁ ▃ ▅ █ ▇"
         "    ▃ ▅ ▇ █ ▇ ▅ ▃ ▁     ▅ ▇ █ ▇ ▅ ▃ ▁     ▃ ▅ ▇ █ ▇"
@@ -148,13 +155,11 @@ show_project_databass() {
         "    █ ▇ ▅ ▃ ▁ ▃ ▅ ▇     ▇ ▅ ▃ ▁ ▃ ▅ ▇     █ ▇ ▅ ▃ ▁"
         "    ▇ ▅ ▃ ▁ ▃ ▅ ▇ █     ▅ ▃ ▁ ▃ ▅ ▇ █     ▇ ▅ ▃ ▁ ▃"
     )
-
     for i in {1..8}; do
         pattern=${eq_patterns[$((i % 6))]}
         echo -ne "\r${MAGENTA}${pattern}${RESET}"
         sleep 0.5
     done
-
     echo ""
     echo ""
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -163,7 +168,6 @@ show_project_databass() {
     show_work
 }
 
-# Johnson & Johnson
 show_project_jnj() {
     clear
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -172,17 +176,19 @@ show_project_jnj() {
     echo ""
     echo -e "${DIM}Improving supply chain monitoring at scale${RESET}"
     echo ""
-
+    
     echo -e "${BOLD}Goal${RESET}"
-    echo "Data-entry workflows were slow, inconsistent, and mentally draining."
+    echo "Data-entry workflow was slow, error-prone, and mentally"
+    echo "exhausting for global supply-chain teams."
     echo ""
     echo -e "${BOLD}Solution${RESET}"
-    echo "Redesigned with role-based tables and bulk-entry patterns."
+    echo "Redesigned the system with role-based tables and bulk-entry"
+    echo "patterns."
     echo ""
     echo -e "${BOLD}Outcome${RESET}"
-    echo "Workflows became ~85% faster."
+    echo "Workflows became ~85% faster, error rates dropped."
     echo ""
-
+    
     conveyor_frames=(
         "    ◼︎――◼︎――◼︎――◼︎――◼︎――◼︎――→  [PROCESSING]"
         "    ―◼︎――◼︎――◼︎――◼︎――◼︎――◼︎―→  [PROCESSING]"
@@ -191,13 +197,11 @@ show_project_jnj() {
         "    ―◼︎――◼︎――◼︎――◼︎――◼︎――◼︎―→  [OPTIMIZED]"
         "    ――◼︎――◼︎――◼︎――◼︎――◼︎――◼︎→  [OPTIMIZED]"
     )
-
     for i in {1..10}; do
         frame=${conveyor_frames[$((i % 6))]}
         echo -ne "\r${BLUE}${frame}${RESET}"
         sleep 0.5
     done
-
     echo ""
     echo ""
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -206,7 +210,6 @@ show_project_jnj() {
     show_work
 }
 
-# ZillSkill
 show_project_zillskill() {
     clear
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -215,17 +218,18 @@ show_project_zillskill() {
     echo ""
     echo -e "${DIM}Making hobby discovery engaging and sustainable for kids${RESET}"
     echo ""
-
+    
     echo -e "${BOLD}Goal${RESET}"
-    echo "Help kids find hobbies they genuinely enjoy."
+    echo "Help kids identify hobbies they love and stick to them."
     echo ""
     echo -e "${BOLD}Solution${RESET}"
-    echo "Gamified interest capture and daily loops."
+    echo "Gamified onboarding funnel and daily use that captures"
+    echo "interests in a low-stakes way."
     echo ""
     echo -e "${BOLD}Outcome${RESET}"
-    echo "Sustained 7-day engagement and meaningful discovery."
+    echo "Meaningful hobby discovery with consistent 7-day engagement."
     echo ""
-
+    
     plant_frames=(
         "         ·           [DAY 1]"
         "        ·:·          [DAY 2]"
@@ -237,13 +241,11 @@ show_project_zillskill() {
         "  · · ·:::::· · ·    [GROWING]"
         "  ·  ·::🌱::·  ·     [THRIVING]"
     )
-
     for i in {0..8}; do
         frame=${plant_frames[$i]}
         echo -ne "\r${GREEN}${frame}${RESET}"
         sleep 0.6
     done
-
     echo ""
     echo ""
     echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
@@ -259,24 +261,30 @@ show_fun() {
     echo -e "${BOLD}  FUN${RESET}"
     echo -e "${MAGENTA}════════════════════════════════════════════════════${RESET}"
     echo ""
-
-    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} The bread at Dante West Village is peak human joy."
+    
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} The bread at Dante West Village is a top-tier"
+    echo "   life experience."
     echo ""
-    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} I love biryani."
+    
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} I love biryani"
     echo ""
+    
     echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} Current energy: 😮‍💨 😈 😕"
     echo ""
-    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} I love learning why humans do what we do (behavior)."
+    
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} I love learning about why humans do what we do"
+    echo "   (behavior)"
     echo ""
+    
     echo -e "${DIM}      ✨ · · ⋆ · · ✨ · · ⋆ · · ✨${RESET}"
     echo ""
-
+    
     echo -e "${MAGENTA}════════════════════════════════════════════════════${RESET}"
     echo ""
     press_enter
 }
 
-# Helper
+# Helper function
 press_enter() {
     echo -ne "${YELLOW}Press Enter to return to menu...${RESET}"
     read
@@ -287,6 +295,7 @@ main() {
     show_loading
     show_welcome
 
+    # Wait for 'start' command
     while true; do
         read -r input
         if [[ "$input" == "start" ]]; then
@@ -296,15 +305,15 @@ main() {
             echo -ne "${BOLD}→${RESET} "
         fi
     done
-
+    
+    # Main menu loop
     while true; do
         show_menu
         read -r choice
-
         case $choice in
-            about) show_about ;;
-            work) show_work ;;
-            fun) show_fun ;;
+            about)  show_about ;;
+            work)   show_work ;;
+            fun)    show_fun ;;
             exit)
                 clear
                 echo ""
@@ -319,15 +328,15 @@ main() {
                 echo -e "${CYAN}════════════════════════════════════════${RESET}"
                 echo ""
                 echo -e "${DIM}Type 'start' to see available paths again${RESET}"
-                echo -e "${DIM}Ctrl + C to exit the portfolio${RESET}"
+                echo -e "${DIM}Control + C to exit portfolio${RESET}"
                 echo ""
-
+                # Wait for user input to restart or allow Ctrl+C to quit
                 while true; do
                     read -r input
                     if [[ "$input" == "start" ]]; then
                         break
                     else
-                        echo -e "${RED}Type 'start' to continue or close the terminal.${RESET}"
+                        echo -e "${RED}Type 'start' to continue or press Control + C to exit.${RESET}"
                         echo -ne "${BOLD}→${RESET} "
                     fi
                 done
@@ -340,5 +349,5 @@ main() {
     done
 }
 
+# Run the program
 main
-
