@@ -3,11 +3,6 @@
 # adi - Interactive CLI Portfolio
 # Version: 2.1.0
 
-# If stdin isn't a TTY (e.g., running via `curl ... | bash`), rebind to the terminal
-if [ ! -t 0 ] && [ -e /dev/tty ]; then
-  exec </dev/tty
-fi
-
 # Colors
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
@@ -18,6 +13,22 @@ RED='\033[0;31m'
 BOLD='\033[1m'
 DIM='\033[2m'
 RESET='\033[0m'
+
+# --- Ensure reads come from the keyboard even when run via `curl | bash`
+# If stdin isn't a TTY (e.g., piped), reattach it to the terminal.
+if [ ! -t 0 ] && [ -e /dev/tty ]; then
+  exec </dev/tty
+fi
+
+# Small helper to read a line from the terminal consistently
+read_line() {
+  # usage: var=$(read_line "Prompt: ")
+  local __prompt="$1"
+  echo -ne "$__prompt"
+  local __result
+  IFS= read -r __result
+  printf '%s' "$__result"
+}
 
 # Loading animation
 show_loading() {
@@ -109,12 +120,20 @@ show_work() {
     echo ""
     echo -ne "${BOLD}→${RESET} "
     
-    read -r choice
+    choice=$(read_line "")
     case $choice in
-        1) show_project_databass ;;
-        2) show_project_jnj ;;
-        3) show_project_zillskill ;;
-        back) return ;;
+        1)
+            show_project_databass
+            ;;
+        2)
+            show_project_jnj
+            ;;
+        3)
+            show_project_zillskill
+            ;;
+        back)
+            return
+            ;;
         *)
             echo -e "${RED}Invalid option. Try 1, 2, 3, or back${RESET}"
             sleep 1.5
@@ -286,8 +305,8 @@ show_fun() {
 
 # Helper function
 press_enter() {
-    echo -ne "${YELLOW}Press Enter to return to menu...${RESET}"
-    read
+    _junk=$(read_line "${YELLOW}Press Enter to return to menu...${RESET}")
+    :
 }
 
 # Main program flow
@@ -297,23 +316,28 @@ main() {
 
     # Wait for 'start' command
     while true; do
-        read -r input
+        input=$(read_line "${BOLD}→${RESET} ")
         if [[ "$input" == "start" ]]; then
             break
         else
             echo -e "${RED}Please type 'start' to begin.${RESET}"
-            echo -ne "${BOLD}→${RESET} "
         fi
     done
     
     # Main menu loop
     while true; do
         show_menu
-        read -r choice
+        choice=$(read_line "")
         case $choice in
-            about)  show_about ;;
-            work)   show_work ;;
-            fun)    show_fun ;;
+            about)
+                show_about
+                ;;
+            work)
+                show_work
+                ;;
+            fun)
+                show_fun
+                ;;
             exit)
                 clear
                 echo ""
@@ -324,20 +348,18 @@ main() {
                 echo ""
                 echo -e "  ${BLUE}◕‿◕${RESET} adigary00@gmail.com"
                 echo -e "  ${BLUE}(ᵔᴥᵔ)${RESET} linkedin.com/in/adi2612"
-                echo ""
                 echo -e "${CYAN}════════════════════════════════════════${RESET}"
                 echo ""
                 echo -e "${DIM}Type 'start' to see available paths again${RESET}"
                 echo -e "${DIM}Control + C to exit portfolio${RESET}"
                 echo ""
-                # Wait for user input to restart or allow Ctrl+C to quit
+                # Wait for user input to possibly restart
                 while true; do
-                    read -r input
+                    input=$(read_line "${BOLD}→${RESET} ")
                     if [[ "$input" == "start" ]]; then
                         break
                     else
                         echo -e "${RED}Type 'start' to continue or press Control + C to exit.${RESET}"
-                        echo -ne "${BOLD}→${RESET} "
                     fi
                 done
                 ;;
