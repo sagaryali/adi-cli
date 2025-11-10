@@ -1,16 +1,344 @@
 #!/bin/bash
 
-# adi - A personal CLI command
-# Version: 1.0.0
+# adi - Interactive CLI Portfolio
+# Version: 2.2.0
 
-cat << "EOF"
-    ___    ____  ____
-   /   |  / __ \/  _/
-  / /| | / / / // /  
- / ___ |/ /_/ // /   
-/_/  |_/_____/___/   
-                     
-Hello! This is the adi command.
-More information coming soon...
+# Colors
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+RED='\033[0;31m'
+BOLD='\033[1m'
+DIM='\033[2m'
+RESET='\033[0m'
 
+# Loading animation
+show_loading() {
+    echo -e "${CYAN}Initializing Aditya's CLI Mini-Portfolio...${RESET}"
+    echo -n "["
+    for i in {1..30}; do
+        echo -n "█"
+        sleep 0.03
+    done
+    echo "] 100%"
+    sleep 0.3
+    clear
+}
+
+# Welcome screen
+show_welcome() {
+    echo -e "${CYAN}"
+    cat << "EOF"
+       _____
+      /     \
+     |͞ ͞O͞ ͞ ͞ ͞O͞ ͞|
+     |   >   |
+     |  ___  |
+      \_____/
+     ___|_|___
+    |  HELLO  |
+     ~~~~~~~~~
 EOF
+    echo -e "${RESET}"
+    echo -e "${BOLD}Hello, I'm Aditya Garyali.${RESET}"
+    echo "Welcome to my CLI portfolio."
+    echo ""
+    echo -e "${GREEN}Type 'start' to explore.${RESET}"
+    echo ""
+}
+
+# Main menu
+show_menu() {
+    clear
+    echo -e "${CYAN}╔════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}║${RESET}          ${BOLD}ADITYA'S MINI-PORTFOLIO${RESET}               ${CYAN}║${RESET}"
+    echo -e "${CYAN}╚════════════════════════════════════════════════════╝${RESET}"
+    echo ""
+    echo -e "${BOLD}Available paths:${RESET}"
+    echo ""
+    echo -e "  ${GREEN}about${RESET}        who I am and what I care about"
+    echo -e "  ${GREEN}work${RESET}         some of the things I've worked on"
+    echo -e "  ${GREEN}fun${RESET}          useless but delightful things"
+    echo -e "  ${RED}exit${RESET}         close the workspace"
+    echo ""
+    echo -ne "${BOLD}→${RESET} "
+}
+
+# About section
+show_about() {
+    clear
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}  ABOUT${RESET}"
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    echo "I'm Aditya, a product designer who likes understanding how"
+    echo "things work beneath the surface. I approach design by trimming"
+    echo "noise and building from the underlying logic outward."
+    echo ""
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    press_enter
+}
+
+# Work section
+show_work() {
+    clear
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}  WORK${RESET}"
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    echo -e "  ${GREEN}[1]${RESET} ${BOLD}Databass AI${RESET}"
+    echo -e "      ${DIM}Helping AI understand human nuance${RESET}"
+    echo ""
+    echo -e "  ${GREEN}[2]${RESET} ${BOLD}Johnson & Johnson${RESET}"
+    echo -e "      ${DIM}Improving supply chain monitoring at scale${RESET}"
+    echo ""
+    echo -e "  ${GREEN}[3]${RESET} ${BOLD}ZillSkill${RESET}"
+    echo -e "      ${DIM}Making hobby discovery engaging and sustainable for kids${RESET}"
+    echo ""
+    echo -e "  ${RED}[back]${RESET} Return to main menu"
+    echo ""
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    echo -ne "${BOLD}→${RESET} "
+
+    read -r choice
+    case $choice in
+        1) show_project_databass ;;
+        2) show_project_jnj ;;
+        3) show_project_zillskill ;;
+        back) return ;;
+        *)
+            echo -e "${RED}Invalid option. Try 1, 2, 3, or back${RESET}"
+            sleep 1.5
+            show_work
+            ;;
+    esac
+}
+
+# Databass AI
+show_project_databass() {
+    clear
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}  DATABASS AI${RESET}"
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    echo -e "${DIM}Helping AI understand human nuance${RESET}"
+    echo ""
+
+    echo -e "${BOLD}Goal${RESET}"
+    echo "AI models struggled to capture nuanced user taste,"
+    echo "leading to bland or off-target music outputs."
+    echo ""
+    echo -e "${BOLD}Solution${RESET}"
+    echo "A two-step intent-capture flow for mood, genre,"
+    echo "and stylistic cues."
+    echo ""
+    echo -e "${BOLD}Outcome${RESET}"
+    echo "Higher first-output success rate and fewer re-rolls."
+    echo ""
+
+    eq_patterns=(
+        "    ▁ ▃ ▅ █ ▇ ▅ ▃ ▁     ▃ ▅ ▇ █ ▇ ▅ ▃     ▁ ▃ ▅ █ ▇"
+        "    ▃ ▅ ▇ █ ▇ ▅ ▃ ▁     ▅ ▇ █ ▇ ▅ ▃ ▁     ▃ ▅ ▇ █ ▇"
+        "    ▅ ▇ █ ▇ ▅ ▃ ▁ ▃     ▇ █ ▇ ▅ ▃ ▁ ▃     ▅ ▇ █ ▇ ▅"
+        "    ▇ █ ▇ ▅ ▃ ▁ ▃ ▅     █ ▇ ▅ ▃ ▁ ▃ ▅     ▇ █ ▇ ▅ ▃"
+        "    █ ▇ ▅ ▃ ▁ ▃ ▅ ▇     ▇ ▅ ▃ ▁ ▃ ▅ ▇     █ ▇ ▅ ▃ ▁"
+        "    ▇ ▅ ▃ ▁ ▃ ▅ ▇ █     ▅ ▃ ▁ ▃ ▅ ▇ █     ▇ ▅ ▃ ▁ ▃"
+    )
+
+    for i in {1..8}; do
+        pattern=${eq_patterns[$((i % 6))]}
+        echo -ne "\r${MAGENTA}${pattern}${RESET}"
+        sleep 0.5
+    done
+
+    echo ""
+    echo ""
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    press_enter
+    show_work
+}
+
+# Johnson & Johnson
+show_project_jnj() {
+    clear
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}  JOHNSON & JOHNSON${RESET}"
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    echo -e "${DIM}Improving supply chain monitoring at scale${RESET}"
+    echo ""
+
+    echo -e "${BOLD}Goal${RESET}"
+    echo "Data-entry workflows were slow, inconsistent, and mentally draining."
+    echo ""
+    echo -e "${BOLD}Solution${RESET}"
+    echo "Redesigned with role-based tables and bulk-entry patterns."
+    echo ""
+    echo -e "${BOLD}Outcome${RESET}"
+    echo "Workflows became ~85% faster."
+    echo ""
+
+    conveyor_frames=(
+        "    ◼︎――◼︎――◼︎――◼︎――◼︎――◼︎――→  [PROCESSING]"
+        "    ―◼︎――◼︎――◼︎――◼︎――◼︎――◼︎―→  [PROCESSING]"
+        "    ――◼︎――◼︎――◼︎――◼︎――◼︎――◼︎→  [PROCESSING]"
+        "    ◼︎――◼︎――◼︎――◼︎――◼︎――◼︎――→  [OPTIMIZED]"
+        "    ―◼︎――◼︎――◼︎――◼︎――◼︎――◼︎―→  [OPTIMIZED]"
+        "    ――◼︎――◼︎――◼︎――◼︎――◼︎――◼︎→  [OPTIMIZED]"
+    )
+
+    for i in {1..10}; do
+        frame=${conveyor_frames[$((i % 6))]}
+        echo -ne "\r${BLUE}${frame}${RESET}"
+        sleep 0.5
+    done
+
+    echo ""
+    echo ""
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    press_enter
+    show_work
+}
+
+# ZillSkill
+show_project_zillskill() {
+    clear
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}  ZILLSKILL${RESET}"
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    echo -e "${DIM}Making hobby discovery engaging and sustainable for kids${RESET}"
+    echo ""
+
+    echo -e "${BOLD}Goal${RESET}"
+    echo "Help kids find hobbies they genuinely enjoy."
+    echo ""
+    echo -e "${BOLD}Solution${RESET}"
+    echo "Gamified interest capture and daily loops."
+    echo ""
+    echo -e "${BOLD}Outcome${RESET}"
+    echo "Sustained 7-day engagement and meaningful discovery."
+    echo ""
+
+    plant_frames=(
+        "         ·           [DAY 1]"
+        "        ·:·          [DAY 2]"
+        "       ·:::·         [DAY 3]"
+        "      · ::: ·        [DAY 4]"
+        "     ·  :::  ·       [DAY 5]"
+        "    · · ::: · ·      [DAY 6]"
+        "   ·  ·::::: ·  ·    [DAY 7]"
+        "  · · ·:::::· · ·    [GROWING]"
+        "  ·  ·::🌱::·  ·     [THRIVING]"
+    )
+
+    for i in {0..8}; do
+        frame=${plant_frames[$i]}
+        echo -ne "\r${GREEN}${frame}${RESET}"
+        sleep 0.6
+    done
+
+    echo ""
+    echo ""
+    echo -e "${CYAN}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    press_enter
+    show_work
+}
+
+# Fun section
+show_fun() {
+    clear
+    echo -e "${MAGENTA}════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}  FUN${RESET}"
+    echo -e "${MAGENTA}════════════════════════════════════════════════════${RESET}"
+    echo ""
+
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} The bread at Dante West Village is peak human joy."
+    echo ""
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} I love biryani."
+    echo ""
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} Current energy: 😮‍💨 😈 😕"
+    echo ""
+    echo -e "${BOLD}ʕ•ᴥ•ʔ${RESET} I love learning why humans do what we do (behavior)."
+    echo ""
+    echo -e "${DIM}      ✨ · · ⋆ · · ✨ · · ⋆ · · ✨${RESET}"
+    echo ""
+
+    echo -e "${MAGENTA}════════════════════════════════════════════════════${RESET}"
+    echo ""
+    press_enter
+}
+
+# Helper
+press_enter() {
+    echo -ne "${YELLOW}Press Enter to return to menu...${RESET}"
+    read
+}
+
+# Main program flow
+main() {
+    show_loading
+    show_welcome
+
+    while true; do
+        read -r input
+        if [[ "$input" == "start" ]]; then
+            break
+        else
+            echo -e "${RED}Please type 'start' to begin.${RESET}"
+            echo -ne "${BOLD}→${RESET} "
+        fi
+    done
+
+    while true; do
+        show_menu
+        read -r choice
+
+        case $choice in
+            about) show_about ;;
+            work) show_work ;;
+            fun) show_fun ;;
+            exit)
+                clear
+                echo ""
+                echo -e "${GREEN}Thanks for visiting! 👋${RESET}"
+                echo ""
+                echo -e "${CYAN}════════════════════════════════════════${RESET}"
+                echo -e "${BOLD}Let's connect:${RESET}"
+                echo ""
+                echo -e "  ${BLUE}◕‿◕${RESET} adigary00@gmail.com"
+                echo -e "  ${BLUE}(ᵔᴥᵔ)${RESET} linkedin.com/in/adi2612"
+                echo ""
+                echo -e "${CYAN}════════════════════════════════════════${RESET}"
+                echo ""
+                echo -e "${DIM}Type 'start' to see available paths again${RESET}"
+                echo -e "${DIM}Ctrl + C to exit the portfolio${RESET}"
+                echo ""
+
+                while true; do
+                    read -r input
+                    if [[ "$input" == "start" ]]; then
+                        break
+                    else
+                        echo -e "${RED}Type 'start' to continue or close the terminal.${RESET}"
+                        echo -ne "${BOLD}→${RESET} "
+                    fi
+                done
+                ;;
+            *)
+                echo -e "${RED}Invalid path. Try: about, work, fun, or exit${RESET}"
+                sleep 1.5
+                ;;
+        esac
+    done
+}
+
+main
+
